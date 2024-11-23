@@ -16,7 +16,7 @@ export default tseslint.config(
   pluginPromise.configs['flat/recommended'],
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx,js}'],
     languageOptions: {
       parser: tsParser,
       globals: {
