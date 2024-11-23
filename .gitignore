@@ -1,8 +1,10 @@
 # compiled output
 /dist
+/dist/
 /node_modules
 /build
-
+/node_modules/
+.pnpm-store/
 # Logs
 logs
 *.log
