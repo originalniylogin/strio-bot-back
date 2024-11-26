@@ -5,6 +5,8 @@ import { UserService } from 'modules/user/user.service';
 import { Hears, InjectBot, On, Start, TELEGRAF_STAGE, Update } from 'nestjs-telegraf';
 import { type Context, Scenes, Telegraf } from 'telegraf';
 
+import { KEYBOARD_ACTIONS, MESSAGE_TEXTS } from './telegram.constants';
+
 import type { SceneContext } from 'telegraf/scenes';
 
 @Update()
@@ -40,9 +42,10 @@ export class TelegramService {
 
       if (isNil(user)) return;
 
-      await ctx.reply(`${user.telegramUsername}${user.telegramId}, вращайте барабан!`, {
+      await ctx.reply(MESSAGE_TEXTS.start((sender.first_name as string | null) ?? sender.username), {
         reply_markup: {
-          keyboard: [[{ text: 'Я кончил!' }]],
+          resize_keyboard: true,
+          keyboard: [[{ text: KEYBOARD_ACTIONS.finish }]],
         },
       });
     } catch (error) {
@@ -50,15 +53,26 @@ export class TelegramService {
     }
   }
 
-  @Hears('Я кончил!')
+  @Hears(KEYBOARD_ACTIONS.finish)
   async stopListening(ctx: Context): Promise<void> {
     try {
       const sender = this.getSenderFromContext(ctx);
       if (isNil(sender)) return;
       await this.userService.stopListening(sender.id.toString());
-      await ctx.reply('Сектор приз на баране!', {
+      await ctx.reply(MESSAGE_TEXTS.finish.text, {
         reply_markup: {
-          keyboard: [[{ text: 'Но я на этом вовсе не закончил!' }]],
+          inline_keyboard: [[{ text: MESSAGE_TEXTS.finish.link.label, url: MESSAGE_TEXTS.finish.link.href }]],
+        },
+      });
+      await ctx.reply(MESSAGE_TEXTS.socials.text, {
+        reply_markup: {
+          inline_keyboard: [[{ text: MESSAGE_TEXTS.socials.link.label, url: MESSAGE_TEXTS.socials.link.href }]],
+        },
+      });
+      await ctx.reply(MESSAGE_TEXTS.sinature, {
+        reply_markup: {
+          resize_keyboard: true,
+          keyboard: [[{ text: KEYBOARD_ACTIONS.start }]],
         },
       });
     } catch (error) {
@@ -66,15 +80,16 @@ export class TelegramService {
     }
   }
 
-  @Hears('Но я на этом вовсе не закончил!')
+  @Hears(KEYBOARD_ACTIONS.start)
   async startListening(ctx: Context): Promise<void> {
     try {
       const sender = this.getSenderFromContext(ctx);
       if (isNil(sender)) return;
       await this.userService.startListening(sender.id.toString());
-      await ctx.reply('Вращайте барабан!', {
+      await ctx.reply(MESSAGE_TEXTS.start((sender.first_name as string | null) ?? sender.username), {
         reply_markup: {
-          keyboard: [[{ text: 'Я кончил!' }]],
+          resize_keyboard: true,
+          keyboard: [[{ text: KEYBOARD_ACTIONS.finish }]],
         },
       });
     } catch (error) {
@@ -91,7 +106,11 @@ export class TelegramService {
       const user = await this.userService.getOrCreateUser(sender.id.toString(), sender.username);
 
       if (isNil(ctx.message?.message_id)) return;
-      await this.messageService.saveMessage(ctx.message.message_id.toString(), user.id);
+
+      const voiceId = (ctx.message as Context['message'] & { voice?: { file_id?: string } }).voice?.file_id;
+      const { text: textContent } = ctx.message as Context['message'] & { text?: string };
+
+      await this.messageService.saveMessage(ctx.message.message_id.toString(), user.id, voiceId, textContent);
     } catch (error) {
       console.error(error);
     }

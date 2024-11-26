@@ -9,7 +9,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'node_modules/**', 'eslint.config.mjs', 'orm.config.mjs', 'lint-staged.config.mjs'],
+    ignores: ['.adminjs/**', 'node_modules/**', 'eslint.config.mjs', 'orm.config.mjs', 'lint-staged.config.mjs'],
   },
   love,
   prettierPluginRecomended,

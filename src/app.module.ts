@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AdminModule } from 'admin/admin.module';
 import { AppConfigService, SharedModule } from 'modules/shared';
 import { TelegramModule } from 'modules/telegram';
 import { UserModule } from 'modules/user';
@@ -18,6 +19,7 @@ import { UserModule } from 'modules/user';
     }),
     UserModule,
     TelegramModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

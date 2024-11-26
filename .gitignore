@@ -1,4 +1,5 @@
 # compiled output
+.adminjs/
 /dist
 /dist/
 /node_modules

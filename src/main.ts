@@ -4,6 +4,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+  const { default: AdminJS } = await import('adminjs');
+  const AdminJsSequelize = await import('@adminjs/sequelize');
+  AdminJS.registerAdapter({ ...AdminJsSequelize });
+
   await app.listen(3000);
 }
 

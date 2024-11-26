@@ -24,6 +24,7 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "strict": true,
+    "jsx": "react-jsx",
     "strictPropertyInitialization": false,
     "useDefineForClassFields": false
   },
