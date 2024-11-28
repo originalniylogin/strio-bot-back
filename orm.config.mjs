@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-dotenv.config({ path: './.env.local' });
+dotenv.config({ path: './.env' });
 const config = {
   dialect: 'postgres',
   host: process.env.DB_HOST,

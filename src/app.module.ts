@@ -10,7 +10,7 @@ import { UserModule } from 'modules/user';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.local',
+      envFilePath: '.env',
     }),
     SequelizeModule.forRootAsync({
       imports: [SharedModule],

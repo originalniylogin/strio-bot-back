@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 # Copy package.json and pnpm-lock.yaml
 COPY pnpm-lock.yaml package.json ./
 # Install app dependencies using PNPM
-RUN npm install -g pnpm
+RUN corepack enable pnpm
 # Install dependencies
 RUN pnpm i
 # Copy the application code
@@ -14,4 +14,4 @@ RUN pnpm run build
 # Expose the app
 EXPOSE 3000
 # Start the application
-CMD ["pnpm", "start", "--unhandled-rejections=warn-with-error-code"]
+CMD ["pnpm", "start:prod", "--unhandled-rejections=warn-with-error-code"]
