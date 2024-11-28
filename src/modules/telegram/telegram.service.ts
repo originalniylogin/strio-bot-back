@@ -3,11 +3,17 @@ import { isNil } from 'lodash';
 import { MessageService } from 'modules/message/message.service';
 import { UserService } from 'modules/user/user.service';
 import { Hears, InjectBot, On, Start, TELEGRAF_STAGE, Update } from 'nestjs-telegraf';
-import { type Context, Scenes, Telegraf } from 'telegraf';
+import { type Context, Input, Scenes, Telegraf } from 'telegraf';
 
 import { KEYBOARD_ACTIONS, MESSAGE_TEXTS } from './telegram.constants';
 
 import type { SceneContext } from 'telegraf/scenes';
+
+const welcomeImage1 = Input.fromLocalFile(`assets/welcome-1.jpg`);
+const welcomeImage3 = Input.fromLocalFile(`assets/welcome-3.jpg`);
+const welcomeImage4 = Input.fromLocalFile(`assets/welcome-4.jpg`);
+const welcomeImage5 = Input.fromLocalFile(`assets/welcome-5.jpg`);
+const welcomeImage6 = Input.fromLocalFile(`assets/welcome-6.jpg`);
 
 @Update()
 @Injectable()
@@ -48,6 +54,13 @@ export class TelegramService {
           keyboard: [[{ text: KEYBOARD_ACTIONS.finish }]],
         },
       });
+      await ctx.replyWithMediaGroup([
+        { type: 'photo', media: welcomeImage1 },
+        { type: 'photo', media: welcomeImage3 },
+        { type: 'photo', media: welcomeImage4 },
+        { type: 'photo', media: welcomeImage5 },
+        { type: 'photo', media: welcomeImage6 },
+      ]);
     } catch (error) {
       console.error(error);
     }
