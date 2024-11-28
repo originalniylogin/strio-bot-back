@@ -4,7 +4,7 @@ import { Column, HasMany, Model, PrimaryKey, Table } from 'sequelize-typescript'
 @Table({ underscored: true, modelName: 'user', paranoid: true })
 export class User extends Model {
   @PrimaryKey
-  @Column({ unique: true, allowNull: false })
+  @Column({ unique: true, autoIncrement: true })
   id: number;
 
   @Column({ unique: true, allowNull: false })
